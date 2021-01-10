@@ -1,0 +1,7 @@
+version: "3.9"
+
+services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - /docker/compose/nginx/:/etc/nginx/conf.d/
