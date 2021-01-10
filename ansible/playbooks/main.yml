@@ -1,0 +1,27 @@
+---
+
+- name: Hello World
+  hosts: all
+  gather_facts: false
+
+  tasks:
+
+    - name: Create compose directory
+      become: true
+      file:
+        state: directory
+        path: /docker/compose/ghost/
+
+    - name: Template compose file
+      become: true
+      template:
+        src: templates/ghost/docker-compose.yml
+        dest: /docker/compose/ghost/docker-compose.yml
+
+    - name: Stop service
+      become: true
+      command: docker-compose -f /docker/compose/ghost/docker-compose.yml down
+
+    - name: Start service
+      become: true
+      command: docker-compose -f /docker/compose/ghost/docker-compose.yml up -d
