@@ -1,0 +1,60 @@
+heat_template_version: 2016-10-14
+
+description: |
+  The heat template is used to create a server as a load balancer member.
+parameters:
+  keypair:
+    type: string
+    default: simon-mba
+  image_id:
+    type: string
+    default: ubuntu-20.04-x86_64
+  flavor_id:
+    type: string
+    default: c1.c1r1
+  network_id:
+    type: string
+    default: 7c69520f-408e-4362-867f-294a15966656
+  sg_ids:
+    type: comma_delimited_list
+    default: "HTTP_INGRESS_ANY,SSH_INGRESS_ANY,HTTPS_INGRESS_ANY"
+  persistent_volume_id:
+    type: string
+    default: ""
+
+conditions:
+  persistent_volume_id_provided:
+    not: 
+      equals: 
+        - get_param: persistent_volume_id
+        - ""
+
+resources:
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      block_device_mapping_v2:
+        - boot_index: 0
+          delete_on_termination: True
+          image: {get_param: image_id }
+          volume_size: 15
+      flavor: { get_param: flavor_id }
+      networks:
+        - network: {get_param: network_id}
+      key_name: {get_param: keypair}
+      security_groups: {get_param: sg_ids}
+
+  floating_ip_assignment:
+    type: OS::Neutron::FloatingIPAssociation
+    properties:
+      floatingip_id: String
+      port_id: { get_attr: [server, addresses, {get_param: network_id}, 0, port]}
+
+  volume_attachment:
+    type: OS::Cinder::VolumeAttachment
+    condition: persistent_volume_id_provided
+    properties:
+      instance_uuid: { get_resource: server }
+      mountpoint: /dev/vdb
+      volume_id: { get_param: persistent_volume_id }
