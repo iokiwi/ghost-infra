@@ -21,6 +21,9 @@ parameters:
   persistent_volume_id:
     type: string
     default: ""
+  floating_ip_address:
+    type: string
+    default: d3d52635-cb3f-490f-97f3-3adf34cdaced
 
 conditions:
   persistent_volume_id_provided:
@@ -39,7 +42,7 @@ resources:
           delete_on_termination: True
           image: {get_param: image_id }
           volume_size: 15
-      flavor: { get_param: flavor_id }
+      flavor: {get_param: flavor_id}
       networks:
         - network: {get_param: network_id}
       key_name: {get_param: keypair}
@@ -48,7 +51,7 @@ resources:
   floating_ip_assignment:
     type: OS::Neutron::FloatingIPAssociation
     properties:
-      floatingip_id: String
+      floatingip_id: {get_param: floating_ip_id}
       port_id: { get_attr: [server, addresses, {get_param: network_id}, 0, port]}
 
   volume_attachment:
