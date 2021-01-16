@@ -1,0 +1,22 @@
+name: Super-Linter
+
+# Run this workflow every time a new commit pushed to your repository
+on:
+  push:
+    branches:
+      - '*'
+      - '!master'
+
+jobs:
+  deploy:
+    name: Deploy docker ghost
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+
+      - name: install-ansible
+        run: sudo pip install -r ansible/requirements.txt
+
+      - name: Deploy app
+        run: ansible-playbook ansible/playbooks/ghost-docker.yml

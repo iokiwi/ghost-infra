@@ -1,6 +1,6 @@
 ---
 
-- name: Hello World
+- name: Deploy Ghost Docker
   hosts: all
   gather_facts: false
 

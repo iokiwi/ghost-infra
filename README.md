@@ -15,5 +15,5 @@ openstack stack create -t infrastructure/stack.yml -e infrastructure/env/prod.ym
 # Deploy
 
 ```bash
-ansible-playbook main.yml
+ansible-playbook playbooks/init.yml
 ```
