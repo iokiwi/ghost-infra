@@ -1,4 +1,4 @@
-name: Super-Linter
+name: Deploy Dev
 
 # Run this workflow every time a new commit pushed to your repository
 on:
