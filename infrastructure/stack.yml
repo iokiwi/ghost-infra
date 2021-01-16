@@ -1,4 +1,4 @@
-heat_template_version: 2016-10-14
+heat_template_version: 2018-08-31
 
 description: |
   The heat template is used to create a server as a load balancer member.
@@ -17,7 +17,7 @@ parameters:
     default: 7c69520f-408e-4362-867f-294a15966656
   sg_ids:
     type: comma_delimited_list
-    default: "HTTP_INGRESS_ANY,SSH_INGRESS_ANY,HTTPS_INGRESS_ANY"
+    default: "default,HTTP_INGRESS_ANY,SSH_INGRESS_ANY,HTTPS_INGRESS_ANY"
   persistent_volume_id:
     type: string
     default: ""
@@ -39,6 +39,8 @@ resources:
     properties:
       block_device_mapping_v2:
         - boot_index: 0
+          device_type: disk
+          device_name: vda
           delete_on_termination: True
           image: {get_param: image_id }
           volume_size: 15
@@ -51,7 +53,7 @@ resources:
   floating_ip_assignment:
     type: OS::Neutron::FloatingIPAssociation
     properties:
-      floatingip_id: {get_param: floating_ip_id}
+      floatingip_id: {get_param: floating_ip_address}
       port_id: { get_attr: [server, addresses, {get_param: network_id}, 0, port]}
 
   volume_attachment:

@@ -6,7 +6,7 @@ services:
     restart: always
     ports:
       - {{ ghost_server_port }}:2368
-    enviroinment:
+    environment:
       url: {{ ghost_url }}
       database__client: {{ ghost_db_client }}
       database__connection__host: {{ ghost_db_host }}
