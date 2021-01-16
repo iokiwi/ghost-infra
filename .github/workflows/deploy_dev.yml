@@ -1,12 +1,11 @@
 name: Deploy Dev
 
-# Run this workflow every time a new commit pushed to your repository
-on:
+on: 
   push:
-    branches:
-      - '*'
-      - '!main'
-      - '!master'
+    branch:
+      - "*"
+      - "!master"
+      - "!main"
 
 jobs:
   deploy:
@@ -16,8 +15,14 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v2
 
-      - name: install-ansible
-        run: sudo pip install -r ansible/requirements.txt
-
-      - name: Deploy app
-        run: ansible-playbook ansible/playbooks/ghost-docker.yml
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: playbooks/ghost-docker.yml
+          directory: ansible
+          key: ${{secrets.ID_RSA}}
+          inventory: |
+            [all]
+            ghost.dev.simonmerrick.com
+          options: |
+            --verbose

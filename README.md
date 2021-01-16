@@ -10,10 +10,9 @@ openstack stack create -t infrastructure/stack.yml simon-web-dev
 openstack stack create -t infrastructure/stack.yml -e infrastructure/env/prod.yml simon-web-dev
 ```
 
-
-
 # Deploy
 
 ```bash
-ansible-playbook playbooks/init.yml
+cd ansible
+ansible-playbook -i hosts playbooks/init.yml
 ```
