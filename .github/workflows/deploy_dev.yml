@@ -26,3 +26,4 @@ jobs:
             ghost.dev.simonmerrick.com
           options: |
             --verbose
+            --tags ghost
