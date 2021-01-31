@@ -1,5 +1,7 @@
 # Deploy Ghost
 
+![Workflow Status](https://github.com/iokiwi/ghost-infra/workflows/.github/workflows/deploy_dev.yml/badge.svg)
+
 # Provision
 
 ```bash
