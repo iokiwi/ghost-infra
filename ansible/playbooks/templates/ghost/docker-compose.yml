@@ -2,10 +2,11 @@ version: "3.9"
 
 services:
   ghost:
+    container_name: ghost
     image: {{ ghost_docker_image }}
     restart: always
     ports:
-      - {{ ghost_server_port }}:2368
+      - "{{ ghost_server_port }}:{{ ghost_server_port }}"
     environment:
       url: {{ ghost_url }}
       database__client: {{ ghost_db_client }}

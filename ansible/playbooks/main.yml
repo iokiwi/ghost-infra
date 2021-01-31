@@ -1,0 +1,15 @@
+---
+
+- name: Deploy all
+  hosts: all
+  gather_facts: false
+
+  tasks:
+
+    - name: Deploy ghost
+      include_tasks:
+        file: ghost-docker.yml
+
+    - name: Deploy nginx
+      include_tasks:
+        file: nginx-docker.yml

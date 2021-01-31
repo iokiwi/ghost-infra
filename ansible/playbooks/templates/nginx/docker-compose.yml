@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  nginx:
+    container_name: nginx
+    image: {{ nginx_docker_image }}
+    network_mode: host
+    restart: always
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - {{ nginx_config_dir }}:/etc/nginx/conf.d/

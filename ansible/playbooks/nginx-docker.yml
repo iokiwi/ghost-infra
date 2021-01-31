@@ -1,0 +1,33 @@
+---
+
+# - name: Nginx Docker
+#   hosts: all
+#   gather_facts: false
+
+#   tasks:
+
+- name: Create compose directory
+  become: true
+  file:
+    state: directory
+    path: /docker/compose/nginx/
+
+- name: Create nginx configuration directory
+  become: true
+  file:
+    state: directory
+    path: "{{ nginx_config_dir }}"
+
+- name: Template compose file
+  become: true
+  template:
+    src: templates/nginx/docker-compose.yml
+    dest: /docker/compose/nginx/docker-compose.yml
+
+- name: Stop service
+  become: true
+  command: docker-compose -f /docker/compose/nginx/docker-compose.yml down
+
+- name: Start service
+  become: true
+  command: docker-compose -f /docker/compose/nginx/docker-compose.yml up -d
