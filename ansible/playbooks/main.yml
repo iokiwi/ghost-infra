@@ -9,7 +9,17 @@
     - name: Deploy ghost
       include_tasks:
         file: ghost-docker.yml
+        apply:
+          tags:
+            - ghost
+      tags:
+        - ghost
 
     - name: Deploy nginx
       include_tasks:
         file: nginx-docker.yml
+        apply:
+          tags:
+            - nginx
+      tags:
+        - nginx

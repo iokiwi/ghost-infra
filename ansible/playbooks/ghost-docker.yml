@@ -25,3 +25,7 @@
 - name: Start service
   become: true
   command: docker-compose -f /docker/compose/ghost/docker-compose.yml up -d
+
+- name: Reload nginx
+  become: true
+  command: docker-compose -f /docker/compose/nginx/docker-compose.yml exec nginx nginx -s reload
