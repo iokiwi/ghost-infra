@@ -15,6 +15,15 @@
       tags:
         - nginx
 
+    - name: Certbot docker
+      include_tasks:
+        file: certbot-docker.yml
+        apply:
+          tags:
+            - certbot
+      tags:
+        - certbot
+
     - name: Deploy ghost
       include_tasks:
         file: ghost-docker.yml

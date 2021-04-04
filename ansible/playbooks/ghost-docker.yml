@@ -12,19 +12,56 @@
     src: templates/ghost/docker-compose.yml
     dest: /docker/compose/ghost/docker-compose.yml
 
+- name: Stop ghost
+  become: true
+  command: docker-compose -f /docker/compose/ghost/docker-compose.yml down
+
+- name: Start gost
+  become: true
+  command: docker-compose -f /docker/compose/ghost/docker-compose.yml up -d
+
+- name: Check if cert exists
+  stat:
+    path: "{{ certbot_cert_directory }}/live/{{ ghost_server_name }}/fullchain.pem"
+  register: ghost_cert
+
+- name: Create dummy certificate
+  become: true
+  template:
+    src: templates/certbot/nginx.conf
+    dest: "{{ certbot_cert_directory }}/live/{{ ghost_server_name }}/fullchain.pem"
+  when: not ghost_cert.stat.exists
+
+- name: Check if cert key exists
+  stat:
+    path: "{{ certbot_cert_directory }}/live/{{ ghost_server_name }}/privkey.pem"
+  register: ghost_cert_key
+
+- name: Create dummy certificate key
+  become: true
+  template:
+    src: templates/certbot/nginx.conf
+    dest: "{{ certbot_cert_directory }}/live/{{ ghost_server_name }}/fullchain.pem"
+  when: not ghost_cert_key.stat.exists
+
 - name: Template nginx config file
   become: true
   template:
     src: templates/ghost/nginx.conf
     dest: "{{ nginx_config_dir }}/{{ ghost_server_name }}.conf"
 
-- name: Stop service
-  become: true
-  command: docker-compose -f /docker/compose/ghost/docker-compose.yml down
+# Todo only renew/issue certs if necessary
 
-- name: Start service
+- name: Get real certificates
   become: true
-  command: docker-compose -f /docker/compose/ghost/docker-compose.yml up -d
+  command: >
+    docker-compose -f /docker/compose/certbot/docker-compose.yml run \
+      certbot certonly -n \
+        --email {{ certbot_email }} \
+        --agree-tos \
+        --webroot -w /var/www/certbot \
+        --force-renewal \
+        -d {{ ghost_server_name }}
 
 - name: Reload nginx
   become: true
