@@ -6,6 +6,12 @@
 
 #   tasks:
 
+- name: Create nginx config directory
+  become: true
+  file:
+    state: directory
+    path: "{{ nginx_config_dir }}"
+
 - name: Create compose directory
   become: true
   file:

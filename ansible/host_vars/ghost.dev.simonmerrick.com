@@ -1,5 +1,4 @@
 ---
-
 ghost_docker_image: ghost:3-alpine
 ghost_url: http://ghost.dev.simonmerrick.com
 
