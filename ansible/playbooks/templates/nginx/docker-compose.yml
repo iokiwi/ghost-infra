@@ -11,3 +11,5 @@ services:
       - "443"
     volumes:
       - {{ nginx_config_dir }}:/etc/nginx/conf.d/
+      - {{ certbot_acme_challenge_directory }}:/var/www/certbot
+      - {{ certbot_cert_directory }}:/etc/letsencrypt
