@@ -25,24 +25,26 @@
     path: "{{ certbot_cert_directory }}/live/{{ ghost_server_name }}/fullchain.pem"
   register: ghost_cert
 
-- name: Create dummy certificate
-  become: true
-  template:
-    src: templates/certbot/nginx.conf
-    dest: "{{ certbot_cert_directory }}/live/{{ ghost_server_name }}/fullchain.pem"
-  when: not ghost_cert.stat.exists
-
 - name: Check if cert key exists
   stat:
-    path: "{{ certbot_cert_directory }}/live/{{ ghost_server_name }}/privkey.pem"
+    path: "{{ ghost_certificate_path }}/privkey.pem"
   register: ghost_cert_key
 
-- name: Create dummy certificate key
+- name: Create dummy certificate path
   become: true
-  template:
-    src: templates/certbot/nginx.conf
-    dest: "{{ certbot_cert_directory }}/live/{{ ghost_server_name }}/fullchain.pem"
-  when: not ghost_cert_key.stat.exists
+  file:
+    state: directory
+    path: "{{ ghost_certificate_path }}"
+  when: not ghost_cert.stat.exists and not ghost_cert_key.stat.exists
+
+- name: Create dummy certificate
+  become: true
+  command: >
+    openssl req -x509 -nodes -newkey rsa:4096 -days 1 \
+      -keyout {{ ghost_certificate_path }}/privkey.pem \
+      -out {{ ghost_certificate_path }}/fullchain.pem \
+      -subj /CN=localhost
+  when: not ghost_cert.stat.exists and not ghost_cert_key.stat.exists
 
 - name: Template nginx config file
   become: true
@@ -50,8 +52,12 @@
     src: templates/ghost/nginx.conf
     dest: "{{ nginx_config_dir }}/{{ ghost_server_name }}.conf"
 
-# Todo only renew/issue certs if necessary
+- name: Reload nginx
+  become: true
+  command: docker-compose -f /docker/compose/nginx/docker-compose.yml exec nginx nginx -s reload
+  ignore_errors: true
 
+# Todo only renew/issue certs if necessary
 - name: Get real certificates
   become: true
   command: >
