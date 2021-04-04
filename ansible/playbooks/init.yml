@@ -8,7 +8,12 @@
 
     - name: Update apt repository
       become: true
-      command: "apt update -y"
+      apt:
+        update_cache: yes
+
+    # - name: Update apt repository
+    #   become: true
+    #   command: "apt update -y"
 
     - name: Uninstall old versions
       become: true

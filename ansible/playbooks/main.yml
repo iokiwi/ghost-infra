@@ -6,15 +6,6 @@
 
   tasks:
 
-    - name: Deploy ghost
-      include_tasks:
-        file: ghost-docker.yml
-        apply:
-          tags:
-            - ghost
-      tags:
-        - ghost
-
     - name: Deploy nginx
       include_tasks:
         file: nginx-docker.yml
@@ -23,3 +14,12 @@
             - nginx
       tags:
         - nginx
+
+    - name: Deploy ghost
+      include_tasks:
+        file: ghost-docker.yml
+        apply:
+          tags:
+            - ghost
+      tags:
+        - ghost
