@@ -1,11 +1,5 @@
 ---
 
-# - name: Nginx Docker
-#   hosts: all
-#   gather_facts: false
-
-#   tasks:
-
 - name: Create nginx config directory
   become: true
   file:
