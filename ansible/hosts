@@ -1,7 +1,14 @@
-ghost.dev.simonmerrick.com
+# ghost.dev.simonmerrick.com
+ghost3.dev.simonmerrick.com
 
 [ghost]
-ghost.dev.simonmerrick.com
+# ghost.dev.simonmerrick.com
+ghost3.dev.simonmerrick.com
+
+[dev]
+# ghost.dev.simonmerrick.com
+ghost3.dev.simonmerrick.com
 
 [web]
-ghost.dev.simonmerrick.com
+# ghost.dev.simonmerrick.com
+ghost3.dev.simonmerrick.com

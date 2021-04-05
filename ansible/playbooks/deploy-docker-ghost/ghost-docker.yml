@@ -1,0 +1,22 @@
+---
+
+- name: Create ghost compose directory
+  become: true
+  file:
+    state: directory
+    path: /docker/compose/ghost/
+
+- name: Template ghost compose file
+  become: true
+  template:
+    src: templates/ghost/docker-compose.yml
+    dest: /docker/compose/ghost/docker-compose.yml
+
+- name: Stop ghost
+  become: true
+  command: docker-compose -f /docker/compose/ghost/docker-compose.yml down
+
+- name: Start gost
+  become: true
+  command: docker-compose -f /docker/compose/ghost/docker-compose.yml up -d
+

@@ -11,10 +11,6 @@
       apt:
         update_cache: yes
 
-    # - name: Update apt repository
-    #   become: true
-    #   command: "apt update -y"
-
     - name: Uninstall old versions
       become: true
       apt:
@@ -43,16 +39,14 @@
         "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -"
       register: gpg_key
 
-    - debug:
-        msg: "{{ gpg_key.stdout_lines }}"
-
     - name: Add docker repository
       become: true
       raw: "add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\""
 
     - name: Update apt repository
       become: true
-      raw: "apt update -y"
+      apt:
+        update_cache: yes
 
     - name: Install docker-community edition
       become: true

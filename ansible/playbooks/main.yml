@@ -26,7 +26,7 @@
 
     - name: Deploy ghost
       include_tasks:
-        file: ghost-docker.yml
+        file: deploy-docker-ghost/main.yml
         apply:
           tags:
             - ghost
