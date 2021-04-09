@@ -1,7 +1,7 @@
 ---
 ghost_docker_image: ghost:3-alpine
 
-ghost_server_name: ghost3.dev.simonmerrick.com
+ghost_server_name: ghost5.dev.simonmerrick.com
 ghost_url: https://{{ghost_server_name}}
 
 ghost_server_port: 2368
@@ -20,3 +20,5 @@ certbot_acme_challenge_directory: /var/www/certbot
 certbot_email: s.m3rrick@gmail.com
 
 ghost_certificate_path: "{{ certbot_cert_directory }}/live/{{ ghost_server_name }}"
+ghost_certificate_fullchain: "{{ghost_certificate_path}}/fullchain.pem"
+ghost_certificate_privkey:  "{{ghost_certificate_path}}/privkey.pem"
