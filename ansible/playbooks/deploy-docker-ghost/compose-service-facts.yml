@@ -1,0 +1,15 @@
+- name: Check if Letsencrypt certificate exists
+  become: true
+  stat:
+    path: "{{ ghost_certificate_fullchain }}"
+  register: ghost_fullchain_exists
+
+- name: Check if Letsencrypt certificate key exists
+  become: true
+  stat:
+    path: "{{ ghost_certificate_fullchain }}"
+  register: ghost_privkey_exists
+
+- name: Set Letsencrypt certificate exist fact
+  set_fact:
+    ghost_certificates_exist: "{{ ghost_fullchain_exists.stat.exists and ghost_privkey_exists.stat.exists }}"

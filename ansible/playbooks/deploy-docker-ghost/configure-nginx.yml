@@ -1,29 +1,14 @@
+- name: Create Letsencrypt certificates
+  include_tasks:
+    file: init-certs.yml
+  when: not ghost_certificates_exist
+
+#TODO: Certbot renew
+
 - name: Template nginx config file
   become: true
   template:
-    src: templates/ghost/nginx-setup.conf
-    dest: "{{ nginx_config_dir }}/{{ ghost_server_name }}.conf"
-
-- name: Reload nginx
-  become: true
-  command: docker-compose -f /docker/compose/nginx/docker-compose.yml exec nginx nginx -s reload
-  ignore_errors: true
-
-# Todo only renew/issue certs if necessary
-- name: Get real certificates
-  become: true
-  command: >
-    docker-compose -f /docker/compose/certbot/docker-compose.yml run \
-      certbot certonly -n \
-        --email {{ certbot_email }} \
-        --agree-tos \
-        --webroot -w /var/www/certbot \
-        -d {{ ghost_server_name }}
-
-- name: Template nginx ssl config file
-  become: true
-  template:
-    src: templates/ghost/nginx-ssl.conf
+    src: templates/ghost/nginx.conf
     dest: "{{ nginx_config_dir }}/{{ ghost_server_name }}.conf"
 
 - name: Reload nginx
