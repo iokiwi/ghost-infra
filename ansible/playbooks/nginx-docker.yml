@@ -6,7 +6,7 @@
     state: directory
     path: "{{ nginx_config_dir }}"
 
-- name: Create compose directory
+- name: Create nginx compose directory
   become: true
   file:
     state: directory
@@ -18,16 +18,16 @@
     state: directory
     path: "{{ nginx_config_dir }}"
 
-- name: Template compose file
+- name: Template nginx compose file
   become: true
   template:
     src: templates/nginx/docker-compose.yml
     dest: /docker/compose/nginx/docker-compose.yml
 
-- name: Stop service
+- name: Stop nginx
   become: true
   command: docker-compose -f /docker/compose/nginx/docker-compose.yml down
 
-- name: Start service
+- name: Start nginx
   become: true
   command: docker-compose -f /docker/compose/nginx/docker-compose.yml up -d

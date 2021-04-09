@@ -22,27 +22,3 @@
   template:
     src: templates/certbot/docker-compose.yml
     dest: /docker/compose/certbot/docker-compose.yml
-
-# - name: Check if cert exists
-#   stat:
-#     path: "{{ certbot_cert_directory }}/live/{{ ghost_server_name }}/fullchain.pem"
-#   register: register_name
-
-# - name: Check if cert key exists
-#   stat:
-#     path: "{{ certbot_cert_directory }}/live/{{ ghost_server_name }}/privkey.pem"
-#   register: register_name_2
-
-# - name: Init certbot
-#   include_tasks:
-#     file: certbot-docker-init.yml
-#     apply:
-#       tags:
-#         - certbot
-#   tags:
-#     - certbot
-#   when: not register_name_2.stat.exists or not register_name.stat.exists
-
-# - name: Get real certificates
-#   become: true
-#   command: "docker-compose -f /docker/compose/certbot/docker-compose.yml run certbot certonly --email s.m3rrick@gmail.com --agree-tos -n --webroot -w /var/www/certbot -d ghost.dev.simonmerrick.com"
