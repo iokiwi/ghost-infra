@@ -1,18 +1,12 @@
 ---
+- name: Ghost service facts
+  include_tasks:
+    file: compose-service-facts.yml
+
 - name: Configure nginx
   include_tasks:
     file: configure-nginx.yml
-    apply:
-      tags:
-        - ghost
-  tags:
-    - ghost
 
 - name: Deploy ghost-docker
   include_tasks:
     file: ghost-docker.yml
-    apply:
-      tags:
-        - ghost
-  tags:
-    - ghost
