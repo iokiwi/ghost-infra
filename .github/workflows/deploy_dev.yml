@@ -22,8 +22,8 @@ jobs:
           directory: ansible
           key: ${{secrets.ID_RSA}}
           inventory: |
-            [all]
-            ghost.dev.simonmerrick.com
+            [dev]
+            ghost5.dev.simonmerrick.com
           options: |
             --verbose
             --tags ghost
